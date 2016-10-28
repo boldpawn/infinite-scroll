@@ -6,16 +6,11 @@ import 'rxjs/Rx';
 const IMAGE_URL = "/api/image?start=20&size=10"
 
 @Injectable()
-export class ImageService implements OnInit {
+export class ImageService {
 
   _images: Observable<Image[]>
 
   constructor(private _http: Http) { }
-
-  public ngOnInit() {
-    console.log("fetching images");
-    this._images = this.fetchImages();
-  }
 
   private fetchImages(): Observable<Image[]> {
     return this._http
