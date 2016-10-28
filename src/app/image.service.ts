@@ -1,29 +1,23 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, URLSearchParams } from '@angular/http';
 import { Observable} from 'rxjs'
 import 'rxjs/Rx';
 
-const IMAGE_URL = "/api/image?start=20&size=10"
+const IMAGE_URL = "/api/image"
 
 @Injectable()
 export class ImageService {
 
-  _images: Observable<Image[]>
-
   constructor(private _http: Http) { }
 
-  private fetchImages(): Observable<Image[]> {
+  public fetchImages(start: number, size: number): Observable<Image[]> {
+    var params: URLSearchParams = new URLSearchParams();
+    params.set('start', String(start));
+    params.set('size', String(size));
+    console.log("http call with start param %s", start);
     return this._http
-      .get(IMAGE_URL)
+      .get(IMAGE_URL, { search: params })
       .map((response) => response.json() as Image[])
-  }
-
-  getImages() {
-    console.log("images requested");
-    if (!this._images) {
-      this._images = this.fetchImages();
-    }
-    return this._images;
   }
 
 }
