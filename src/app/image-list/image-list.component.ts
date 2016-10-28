@@ -9,11 +9,11 @@ import { Observable, Observer, Subject } from 'rxjs/Rx';
 })
 export class ImageListComponent implements OnInit {
 
-  private _size = 10;
+  static ITEMS_PER_PAGE = 10;
 
   private _index = 0;
 
-  private _scrollStream = new Subject<Event>();
+  private _scrollStream = new Subject<number>();
 
   private _images: Image[] = [];
 
@@ -27,26 +27,21 @@ export class ImageListComponent implements OnInit {
 
   @HostListener('window:scroll')
   onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      this._scrollStream.next(event);
-    }
+    this._scrollStream.next(1);
   }
 
   ngOnInit() {
-    this._imageService.fetchImages(this._index, this._size).subscribe((images) => {
-      images.forEach((image) => {
-        this._images.push(image)
-      });
-    });
     this._scrollStream
+      .startWith(1)
+      .filter(() => ((window.innerHeight + window.scrollY) >= document.body.offsetHeight))
       .subscribe(() => {
-        this._index = this._index + this._size;
-        this._imageService.fetchImages(this._index, this._size).subscribe((images) => {
+        this._imageService.fetchImages(this._index, ImageListComponent.ITEMS_PER_PAGE).subscribe((images) => {
           images.forEach((image) => {
             this._images.push(image)
           }
           );
         });
+        this._index = this._index + ImageListComponent.ITEMS_PER_PAGE;
       });
   }
 
