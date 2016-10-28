@@ -36,10 +36,8 @@ export class ImageListComponent implements OnInit {
       .filter(() => (window.innerHeight + window.scrollY) >= document.body.offsetHeight)
       .subscribe(() => {
         this._imageService.fetchImages(this._index, ImageListComponent.ITEMS_PER_PAGE)
-          .retryWhen((errors) => errors.delay(1000))
-          .subscribe((images) => {
-            images.forEach(image => this._images.push(image));
-          });
+          .retryWhen(errors => errors.delay(1000))
+          .subscribe(images => images.forEach(image => this._images.push(image)));
         this._index = this._index + ImageListComponent.ITEMS_PER_PAGE;
       });
   }
