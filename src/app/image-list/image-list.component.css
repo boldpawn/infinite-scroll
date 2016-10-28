@@ -1,0 +1,16 @@
+.image {
+  position: relative;
+}
+
+.image-text {
+  width: 100%;
+  position: absolute;
+  top: 5pt;
+  text-align: center;
+  color: red;
+  font-size: 48pt;
+}
+
+img {
+  width: 100%
+}

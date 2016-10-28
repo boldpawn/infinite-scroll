@@ -1,0 +1,4 @@
+<div *ngFor="let image of images | async" class="image">
+  <div class="image-text">{{image.name}}</div>
+  <img [src]="image.url">
+</div>
