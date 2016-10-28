@@ -33,7 +33,7 @@ export class ImageListComponent implements OnInit {
   ngOnInit() {
     this._scrollStream
       .startWith(1)
-      .filter(() => ((window.innerHeight + window.scrollY) >= document.body.offsetHeight))
+      .filter(() => (window.innerHeight + window.scrollY) >= document.body.offsetHeight)
       .subscribe(() => {
         this._imageService.fetchImages(this._index, ImageListComponent.ITEMS_PER_PAGE)
           .retryWhen((errors) => errors.delay(1000))
